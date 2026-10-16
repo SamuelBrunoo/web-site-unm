@@ -6,7 +6,7 @@ import { useQuote } from "@/context/QuoteContext";
 import hidraulica from "@/public/images//hero-hidraulica.jpg";
 import gas from "@/public/images//hero-gas.jpg";
 import projetos from "@/public/images//hero-projetos.jpg";
-import { StaticImageData } from "next/image"
+import Image, { type StaticImageData } from "next/image"
 
 const IMAGES: Record<string, StaticImageData> = { hidraulica, gas, projetos };
 
@@ -66,13 +66,13 @@ export default function Hero() {
             i === index ? "opacity-100" : "opacity-0"
           }`}
         >
-          <img
-            src={IMAGES[c.id].src}
+          <Image
+            src={IMAGES[c.id]}
             alt={c.label}
             draggable={false}
-            width={1600}
-            height={1104}
-            loading={i === 0 ? "eager" : "lazy"}
+            fill
+            sizes="100vw"
+            priority={i === 0}
             style={{ transform: `translate3d(0, ${offset * 0.28}px, 0) scale(1.12)` }}
             className="h-full w-full object-cover will-change-transform"
           />

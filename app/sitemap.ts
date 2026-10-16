@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://www.unmservicos.com.br",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
+      url: SITE_URL,
+      lastModified: new Date("2026-10-16"),
+      changeFrequency: "monthly",
       priority: 1,
     },
   ];

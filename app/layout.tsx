@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { QuoteProvider } from "@/context/QuoteContext";
+import { SITE_URL, OG_IMAGE } from "@/lib/site";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,7 +17,6 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-const SITE_URL = "https://www.unmservicos.com.br";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
       "Reparos e instalações hidráulicas, sistemas de gás e projetos residenciais. Preços na tabela e orçamento imediato pelo WhatsApp.",
     images: [
       {
-        url: "/images/og-cover.svg",
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
         alt: "UNM Serviços — Hidráulica e Gás",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     title: "UNM Serviços — Hidráulica e Gás na Grande Florianópolis",
     description:
       "Reparos e instalações hidráulicas, sistemas de gás e projetos residenciais na Grande Florianópolis.",
-    images: ["/images/og-cover.svg"],
+    images: [OG_IMAGE],
   },
   robots: {
     index: true,
@@ -77,7 +77,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Plumber",
   name: "UNM Serviços",
-  image: `${SITE_URL}/images/og-cover.svg`,
+  image: `${SITE_URL}${OG_IMAGE}`,
   telephone: "+5548998176620",
   url: SITE_URL,
   areaServed: [
