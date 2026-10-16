@@ -90,7 +90,7 @@ export default function QuoteDrawer() {
                   "Olá, Udson! Quero um orçamento para um projeto residencial personalizado.",
                 )}
                 target="_blank"
-                rel="noisOpener"
+                rel="noopener"
                 className="brand-gradient mt-4 inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold text-white"
               >
                 <MessageCircle className="size-4" /> Falar com o Udson

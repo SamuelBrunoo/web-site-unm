@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import { serviceCategories, buildWhatsappLink, type ServiceItem, CategoryId, Service } from "@/lib/data"
+import { buildWhatsappLink, type ServiceItem, CategoryId, Service } from "@/lib/data"
 
 type QuoteContextValue = {
   isOpen: boolean
@@ -31,13 +31,10 @@ type QuoteContextValue = {
 
 const QuoteContext = createContext<QuoteContextValue | null>(null)
 
-const allItems = serviceCategories.flatMap((c) => c.items)
-
 export function QuoteProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
   const [category, setCategory] = useState<CategoryId>("hidraulica")
   const [pageCategory, setPageCategory] = useState<CategoryId>("hidraulica")
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [items, setItems] = useState<Service[]>([])
 
   const openDrawer = useCallback((c?: CategoryId) => {
@@ -47,16 +44,14 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
   const closeDrawer = useCallback(() => setIsOpen(false), [])
 
   const toggleItem = useCallback((item: ServiceItem) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(item.id)) {
-        next.delete(item.id)
-      } else {
-        next.add(item.id)
-      }
-      return next
-    })
+    setItems((prev) =>
+      prev.some((i) => i.id === item.id)
+        ? prev.filter((i) => i.id !== item.id)
+        : [...prev, item],
+    )
   }, [])
+
+  const selectedIds = useMemo(() => new Set(items.map((i) => i.id)), [items])
 
   const remove = useCallback((id: string) => {
     setItems((prev) => prev.filter((i) => i.id !== id))
@@ -67,14 +62,11 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
     document.getElementById("orcamentos")?.scrollIntoView({ behavior: "smooth" })
   }, [])
 
-  const selectedItems = useMemo(
-    () => allItems.filter((item) => selectedIds.has(item.id)),
-    [selectedIds]
-  )
+  const selectedItems = items
 
   const total = useMemo(
-    () => selectedItems.reduce((sum, item) => sum + item.price, 0),
-    [selectedItems]
+    () => items.reduce((sum, item) => sum + item.price, 0),
+    [items]
   )
 
   const whatsappHref = useMemo(() => {
@@ -98,8 +90,8 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
     closeDrawer,
     selectedIds,
     toggleItem,
-    total: items.reduce((a, b) => a + b.price, 0),
-    itemCount: selectedItems.length,
+    total,
+    itemCount: items.length,
     whatsappHref,
     pageCategory,
     setPageCategory,
@@ -108,7 +100,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
     remove,
     category,
     setCategory,
-    has: (id: string) => items.some((i) => i.id === id),
+    has: (id: string) => selectedIds.has(id),
   }
 
   return <QuoteContext.Provider value={value}>{children}</QuoteContext.Provider>
